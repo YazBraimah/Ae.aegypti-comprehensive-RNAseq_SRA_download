@@ -1,0 +1,20 @@
+{
+    "__default__": {
+        "q"         : "regular.q@cbsubscb02,regular.q@cbsubscb03,regular.q@cbsubscb04,regular.q@cbsubscb05,regular.q@cbsubscb06,regular.q@cbsubscb07,regular.q@cbsubscb08,regular.q@cbsubscb10,regular.q@cbsubscb11,regular.q@cbsubscb12,regular.q@cbsubscb13",
+        "output"    : "/home/ya76/GitHub_Repositories/Ae.aegypti-comprehensive-RNAseq_SRA_download/cluster_logs/",
+        "jname"     : "default",
+        "cores"     : 2,
+        "bl"        : 2,
+        "memory"    : "8G",
+        "time"      : "02:00:00"
+    },
+    "get_fastq_files_from_sra_file": {
+        "q"         : "regular.q@cbsubscb02,regular.q@cbsubscb03,regular.q@cbsubscb04,regular.q@cbsubscb05,regular.q@cbsubscb06,regular.q@cbsubscb07,regular.q@cbsubscb08,regular.q@cbsubscb10,regular.q@cbsubscb11,regular.q@cbsubscb12,regular.q@cbsubscb13,",
+        "output"    : "/home/ya76/GitHub_Repositories/Ae.aegypti-comprehensive-RNAseq_SRA_download/cluster_logs/",
+        "jname"     : "fastq_dump",
+        "cores"     : 2,
+        "bl"        : 2,
+        "memory"    : "16G",
+        "time"      : "04:00:00"
+    }
+}
