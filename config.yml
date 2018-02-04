@@ -1,0 +1,8 @@
+# Path to a output folder where files will be written.
+OUT_DIR: '/fs/cbsufsrv5/data1/ya76/Aedes.Aegypti/Comprehensive.RNAseq'
+HOME_DIR: '/home/ya76/GitHub_Repositories/Ae.aegypti-comprehensive-RNAseq_SRA_download'
+WORK_DIR: '/workdir'
+
+# Path to a csv file with SRA sample accessions and their sample names.
+SRA_INFO: '/home/ya76/GitHub_Repositories/Ae.aegypti-comprehensive-RNAseq_SRA_download/Combined_SraRunTables.csv'
+

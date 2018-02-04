@@ -69,7 +69,8 @@ rule all:
     input: 
     	expand(join(OUT_DIR, 'Reads', 'fastq', '{lib}', '{sample}', 'merged', '{sample}.R1.fastq.gz'), zip, sample=SAMPLES, run=RUNS, lib=LIBL),
         expand(join(OUT_DIR, 'Reads', 'fastq', 'PAIRED', '{sample}', 'merged', '{sample}.R1.fastq.gz'), zip, sample=peSAMPLES, run=RUNS, lib=LIBL),
-        expand(join(OUT_DIR, 'Reads', 'fastq', '{lib}', '{sample}', '{run}', '{run}_1.fastq.gz'), zip, sample=peSAMPLES, run=RUNS, lib=LIBL)
+        expand(join(OUT_DIR, 'Reads', 'fastq', '{lib}', '{sample}', '{run}', '{run}_1.fastq.gz'), zip, sample=SAMPLES, run=RUNS, lib=LIBL)
+
         
 ##--------------------------------------------------------------------------------------##
 ##--------------------------------------------------------------------------------------##
@@ -122,6 +123,22 @@ rule get_fastq_files_from_sra_file:
 ##--------------------------------------------------------------------------------------##
 ##--------------------------------------------------------------------------------------##
 
+## Rule to convert SRA format raw file to fastq
+rule clean_sra_files:
+    input: 
+        expand(join(OUT_DIR, 'Reads', 'fastq', '{lib}', '{sample}', '{run}', '{run}_1.fastq.gz'), sample=SAMPLES, run=RUNS, lib=LIBL)
+    output: 
+        join(HOME_DIR, 'removed_sra_files.ok')
+    message: 
+        """--- Cleaning SRA files """
+    run:
+        shell('rm -r ' + join(OUT_DIR, 'Reads', 'sra') +
+                ' && touch {output}')
+
+
+##--------------------------------------------------------------------------------------##
+##--------------------------------------------------------------------------------------##
+
 ## Rule to merge multiple se fastq files from teh same sample
 rule merge_se_fastq_files:
     # input:
@@ -133,7 +150,7 @@ rule merge_se_fastq_files:
     run:
         shell('mkdir -p ' + join(WORK_DIR, USER, JOB_ID) +
                 ' && cd ' + join(WORK_DIR, USER, JOB_ID) + 
-                ' && cp ' + join(OUT_DIR, 'Reads', 'fastq', 'SINGLE', '{wildacrds.sample}', '*', '*_1.fastq.gz') + ' .' +        
+                ' && cp ' + join(OUT_DIR, 'Reads', 'fastq', 'SINGLE', '{wildcards.sample}', '*', '*_1.fastq.gz') + ' .' +        
                 ' && zcat *_1.fastq.gz | gzip - > {wildcards.sample}.R1.fastq.gz')
         shell('mv ' + join(WORK_DIR, USER, JOB_ID, '{wildcards.sample}.R1.fastq.gz') + ' ' + join(OUT_DIR, 'Reads', 'fastq', 'SINGLE', '{wildcards.sample}', 'merged', '{wildcards.sample}.R1.fastq.gz'))
         shell('rm -r ' + join(WORK_DIR, USER, JOB_ID))
@@ -153,7 +170,7 @@ rule merge_left_pe_fastq_files:
     run:
         shell('mkdir -p ' + join(WORK_DIR, USER, JOB_ID) +
                 ' && cd ' + join(WORK_DIR, USER, JOB_ID) + 
-                ' && cp ' + join(OUT_DIR, 'Reads', 'fastq', 'PAIRED', '{wildacrds.sample}', '*', '*_1.fastq.gz') + ' .' +        
+                ' && cp ' + join(OUT_DIR, 'Reads', 'fastq', 'PAIRED', '{wildcards.sample}', '*', '*_1.fastq.gz') + ' .' +        
                 ' && zcat *_1.fastq.gz | gzip - > {wildcards.sample}.R1.fastq.gz')
         shell('mv ' + join(WORK_DIR, USER, JOB_ID, '{wildcards.sample}.R1.fastq.gz') + ' ' + join(OUT_DIR, 'Reads', 'fastq', 'PAIRED', '{wildcards.sample}', 'merged', '{wildcards.sample}.R1.fastq.gz'))
         shell('rm -r ' + join(WORK_DIR, USER, JOB_ID))
@@ -173,7 +190,7 @@ rule merge_right_pe_fastq_files:
     run:
         shell('mkdir -p ' + join(WORK_DIR, USER, JOB_ID) +
                 ' && cd ' + join(WORK_DIR, USER, JOB_ID) + 
-                ' && cp ' + join(OUT_DIR, 'Reads', 'fastq', 'PAIRED', '{wildacrds.sample}', '*', '*_2.fastq.gz') + ' .' +        
+                ' && cp ' + join(OUT_DIR, 'Reads', 'fastq', 'PAIRED', '{wildcards.sample}', '*', '*_2.fastq.gz') + ' .' +        
                 ' && zcat *_2.fastq.gz | gzip - > {wildcards.sample}.R2.fastq.gz')
         shell('mv ' + join(WORK_DIR, USER, JOB_ID, '{wildcards.sample}.R2.fastq.gz') + ' ' + join(OUT_DIR, 'Reads', 'fastq', 'PAIRED', '{wildcards.sample}', 'merged', '{wildcards.sample}.R2.fastq.gz'))
         shell('rm -r ' + join(WORK_DIR, USER, JOB_ID))

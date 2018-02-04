@@ -5,7 +5,7 @@
         "jname"     : "default",
         "cores"     : 2,
         "bl"        : 2,
-        "memory"    : "8G",
+        "memory"    : "4G",
         "time"      : "02:00:00"
     },
     "get_fastq_files_from_sra_file": {
@@ -14,7 +14,7 @@
         "jname"     : "fastq_dump",
         "cores"     : 2,
         "bl"        : 2,
-        "memory"    : "16G",
-        "time"      : "04:00:00"
+        "memory"    : "8G",
+        "time"      : "06:00:00"
     }
 }
