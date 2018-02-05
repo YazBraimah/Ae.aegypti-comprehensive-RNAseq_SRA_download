@@ -68,8 +68,10 @@ if not os.path.exists(OUT_DIR):
 rule all: 
     input: 
     	expand(join(OUT_DIR, 'Reads', 'fastq', '{lib}', '{sample}', 'merged', '{sample}.R1.fastq.gz'), zip, sample=SAMPLES, run=RUNS, lib=LIBL),
-        expand(join(OUT_DIR, 'Reads', 'fastq', 'PAIRED', '{sample}', 'merged', '{sample}.R1.fastq.gz'), zip, sample=peSAMPLES, run=RUNS, lib=LIBL),
+        expand(join(OUT_DIR, 'Reads', 'fastq', 'PAIRED', '{sample}', 'merged', '{sample}.R2.fastq.gz'), zip, sample=peSAMPLES, run=RUNS, lib=LIBL),
         expand(join(OUT_DIR, 'Reads', 'fastq', '{lib}', '{sample}', '{run}', '{run}_1.fastq.gz'), zip, sample=SAMPLES, run=RUNS, lib=LIBL)
+        # join(HOME_DIR, 'removed_sra_files.ok'),
+        # join(HOME_DIR, 'removed_old_fastq_files.ok')
 
         
 ##--------------------------------------------------------------------------------------##
@@ -123,18 +125,34 @@ rule get_fastq_files_from_sra_file:
 ##--------------------------------------------------------------------------------------##
 ##--------------------------------------------------------------------------------------##
 
-## Rule to convert SRA format raw file to fastq
-rule clean_sra_files:
-    input: 
-        expand(join(OUT_DIR, 'Reads', 'fastq', '{lib}', '{sample}', '{run}', '{run}_1.fastq.gz'), sample=SAMPLES, run=RUNS, lib=LIBL)
-    output: 
-        join(HOME_DIR, 'removed_sra_files.ok')
-    message: 
-        """--- Cleaning SRA files """
-    run:
-        shell('rm -r ' + join(OUT_DIR, 'Reads', 'sra') +
-                ' && touch {output}')
+# ## Rule to convert SRA format raw file to fastq
+# rule clean_sra_files:
+#     input: 
+#         expand(join(OUT_DIR, 'Reads', 'fastq', '{lib}', '{sample}', '{run}', '{run}_1.fastq.gz'), sample=SAMPLES, run=RUNS, lib=LIBL)
+#     output: 
+#         join(HOME_DIR, 'removed_sra_files.ok')
+#     message: 
+#         """--- Cleaning SRA files """
+#     run:
+#         shell('rm -r ' + join(OUT_DIR, 'Reads', 'sra') +
+#                 ' && touch {output}')
 
+
+##--------------------------------------------------------------------------------------##
+##--------------------------------------------------------------------------------------##
+
+# ## Rule to convert SRA format raw file to fastq
+# rule clean_old_fastq_files:
+#     input: 
+#         expand(join(OUT_DIR, 'Reads', 'fastq', '{lib}', '{sample}', 'merged', '{sample}.R1.fastq.gz'), sample=SAMPLES, lib=LIBL),
+#         expand(join(OUT_DIR, 'Reads', 'fastq', 'PAIRED', '{sample}', 'merged', '{sample}.R1.fastq.gz'), sample=peSAMPLES)
+#     output: 
+#         join(HOME_DIR, 'removed_old_fastq_files.ok')
+#     message: 
+#         """--- Cleaning old fastq files """
+#     run:
+#         shell('rm -r ' + join(OUT_DIR, 'Reads', 'fastq', '*', '*', 'SRR*') +
+#                 ' && touch {output}')
 
 ##--------------------------------------------------------------------------------------##
 ##--------------------------------------------------------------------------------------##
